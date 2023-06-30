@@ -1,13 +1,13 @@
-const {Thought, Reaction} = require ('../Models/thoughtModel')
-
+const Thought = require ('../Models/thoughtModel')
+const mongoose = require ('mongoose')
 const getAllThoughts = async (req, res ) => {
-    try {
+    // try {
         const thoughts = await Thought
-              .findAll().populate("reactions")
+              .find().populate("reactions")
         res.status(200).json({ results: thoughts })
-    } catch (err) {
-        res.status(500).json({ message: "Error ..." })
-    }
+    // } catch (err) {
+    //     res.status(500).json({ message: err })
+    // }
     // {
     //     "thoughtText": "Here's a cool thought...",
     //     "username": "lernantino",
@@ -23,7 +23,7 @@ const getThought = async (req, res ) => {
               .find({ _id: _id }).populate("reactions")
         res.status(200).json({ results: thoughts })
     } catch (err) {
-        res.status(500).json({ message: "Error ..." })
+        res.status(500).json({ message: err })
     }  
 }
 

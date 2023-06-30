@@ -1,12 +1,12 @@
 const User = require("../Models/userModel")
-
+const mongoose = require ('mongoose')
 const getAllUsers = async (req, res) => {
-    try{
-        const users = await User.findAll()
+    // try{
+        const users = await User.find()
 res.status(200).json({ results: users})
-    }    catch (err) {
-        res.status(500).json({ message: "Error ..." })
-    }
+    // }    catch (err) {
+    //     res.status(500).json({ message: "Error ..." })
+    // }
 }
 
 const getUser = async (req, res) => {
@@ -24,7 +24,7 @@ res.status(200).json({ results: user})
 }
 
 const createUser = async (req, res) => {
-    const {_id} = req.params
+    var _id = new mongoose.Types.ObjectId();
     const {username, email} = req.body
     const filter = {_id:_id}
     const update = {username:username, email:email}
@@ -40,9 +40,10 @@ const createUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-    const {_id} = req.params
+    console.log (req.params)
+    const {id} = req.params
     const {username, email} = req.body
-    const filter = {_id:_id}
+    const filter = {_id:id}
     const update = {username:username, email:email}
     try{
         const doc = await User.findOneAndUpdate(filter, update);
@@ -53,8 +54,8 @@ const editUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    const {_id} = req.params
-    const filter = {_id:_id}
+    const {id} = req.params
+    const filter = {_id:id}
     try{
         User.findOneAndDelete(filter)
         res.status(200).json({ results: "deleted."})

@@ -6,7 +6,7 @@ const thoughtSchema = mongoose.Schema({
     thoughtText: {type: String, required: true, maxLength: 280, },
     date: {type: Date, default: Date.now()},
 username: {type: String, required: true},
-reactions: [{ type : ObjectId, ref: 'Reaction' }]
+reactions: [{ type : mongoose.Types.ObjectId, ref: 'Reaction' }]
 },{timestamps: true })
 
 thoughtSchema.plugin(findOrCreate)
@@ -20,11 +20,11 @@ return formattedToday
 });
 
 thoughtSchema.virtual("reactionCount").get(function() {
-return this.reactions.length + 1
+return this.reactions.length
 })
 
 const reactionSchema = mongoose.Schema({
-reactionId: {type: Schema.Types.ObjectId},
+reactionId: {type: mongoose.Types.ObjectId},
 reactionBody: {type: String, required: true, maxLength: 280},
 username: {type: String, required: true, },
 date: {type: Date, default: Date.now()},
@@ -48,5 +48,5 @@ return formattedToday
 });
 
 const Reaction = mongoose.model('Reaction', reactionSchema);
-
-module.exports = mongoose.model('Thought', thoughtSchema)
+const Thought = mongoose.model('Thought', thoughtSchema)
+module.exports = Thought

@@ -6,13 +6,19 @@ const userSchema = new mongoose.Schema({
 
     username: { type: String, required: true, trim: true, unique: true },
     email: {type: String, required: true, unique: true, match: /^\S+@\S+\.\S+$/},
-    thoughts: [{ type: ObjectId, ref: 'Thought'}],
-    friends: [{ type : ObjectId, ref: 'User' }],
-})
+    thoughts: [{ type: mongoose.Types.ObjectId, ref: 'Thought'}],
+    friends: [{ type : mongoose.Types.ObjectId, ref: 'User' }],
+    
+},{
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
+  })
 
 userSchema.plugin(findOrCreate)
 userSchema.virtual('friendCount').get(function() {
-    return this.friends.length + 1;
+    return this.friends.length;
 });
 
 
@@ -26,4 +32,4 @@ module.exports = mongoose.model('User', userSchema)
 //  .exec(...)
 
 // this is how u add friend to friends list when request is made.
-user.friends.push(newFriend._id);
+//user.friends.push(newFriend._id);
